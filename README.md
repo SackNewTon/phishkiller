@@ -16,9 +16,9 @@ Using multi-threading, the script generates random email addresses and passwords
 
 Make A Json file  called
 
--config.json
+- config.json
 
-and Paste This Code in The json config
+## Copy and Paste This Code in The json config
 
 ```
 {
