@@ -3,53 +3,107 @@ import requests
 import random
 import string
 import names
-import subprocess
-
 from fake_useragent import UserAgent
+import json
+import logging
+import os
 
+# Initialize logging
+logging.basicConfig(filename='requests.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
-
-
-def name_gen():#Generates a random name for the email
+# Function to generate a random name for email
+def name_gen():
     name_system = random.choice(["FullName", "FullFirstFirstInitial", "FirstInitialFullLast"])
     first_name = names.get_first_name()
     last_name = names.get_last_name()
-    if name_system == "FullName":#JohnDoe
-        return first_name + last_name
-    elif name_system == "FullFirstFirstInitial":#JohnD
-        return first_name + last_name[0]
-    return first_name[0] + last_name#JDoe
+    if name_system == "FullName":
+        return first_name + last_name  # JohnDoe
+    elif name_system == "FullFirstFirstInitial":
+        return first_name + last_name[0]  # JohnD
+    return first_name[0] + last_name  # JDoe
 
+# Function to generate a random email address
 def generate_random_email():
     name = name_gen()
-    NumberOrNo=random.choice(["Number", "No"])
-    domain = random.choice(["@gmail.com", "@yahoo.com", "@rambler.ru", "@protonmail.com", "@outlook.com", "@itunes.com"])#Popular email providers
+    NumberOrNo = random.choice(["Number", "No"])
+    domain = random.choice(["@gmail.com", "@yahoo.com", "@rambler.ru", "@protonmail.com", "@outlook.com", "@itunes.com"])
     if NumberOrNo == "Number":
         return name + str(random.randint(1, 100)) + domain
     else:
         return name + domain
 
+# Function to generate a random password
 def generate_random_password():
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(8))
 
-def send_posts(url):
+# Function to send POST requests with advanced features
+def send_posts(url, session, semaphore, proxy=None):
     while True:
         email = generate_random_email()
         password = generate_random_password()
-        data = {"a": email, "az": password}
+        data = {"email": email, "password": password}  # Adjust keys as per your API's requirements
         ua = UserAgent()
         user_agent = ua.random
         headers = {'User-Agent': user_agent}
-        response = requests.post(url, data=data, headers=headers,)
-        print(f"Email: {email}, Password: {password}, Status Code: {response.status_code}, headers: {user_agent}")
+        
+        try:
+            with semaphore:
+                if proxy:
+                    response = session.post(url, data=data, headers=headers, proxies={'http': proxy, 'https': proxy}, timeout=5)
+                else:
+                    response = session.post(url, data=data, headers=headers, timeout=5)
+                
+                # Log successful request
+                logging.info(f"Email: {email}, Password: {password}, Status Code: {response.status_code}, Headers: {user_agent}")
+                
+                print(f"Email: {email}, Password: {password}, Status Code: {response.status_code}, Headers: {user_agent}")
+        except requests.RequestException as e:
+            # Log failed request
+            logging.error(f"Request failed: {e}")
+            print(f"Request failed: {e}")
 
+# Function to load configuration from JSON file or environment variables
+def load_config(filename='config.json'):
+    if os.path.exists(filename):
+        with open(filename, 'r') as f:
+            return json.load(f)
+    else:
+        return {
+            "url": os.getenv('TARGET_URL', 'https://example.com/api'),
+            "num_threads": int(os.getenv('NUM_THREADS', 25)),
+            "max_concurrent_requests": int(os.getenv('MAX_CONCURRENT_REQUESTS', 5)),
+            "proxy": os.getenv('PROXY', None),
+            "auth_token": os.getenv('AUTH_TOKEN', None)
+        }
+
+# Function to manage threads and run the main program
 def main():
-    url = input("Enter the URL of the target you want to flood: ")
-    threads = [threading.Thread(target=send_posts, args=(url,), daemon=True) for _ in range(25)]
-
+    # Load configuration from JSON file or environment variables
+    config = load_config()
+    
+    url = config.get('url')
+    num_threads = config.get('num_threads')
+    proxy = config.get('proxy')
+    auth_token = config.get('auth_token')
+    
+    # Create a session with retries and backoff for resilience
+    session = requests.Session()
+    adapter = requests.adapters.HTTPAdapter(max_retries=3)
+    session.mount('http://', adapter)
+    session.mount('https://', adapter)
+    
+    # Add authentication headers if auth_token is provided
+    if auth_token:
+        session.headers['Authorization'] = f'Bearer {auth_token}'
+    
+    # Semaphore to limit concurrent requests
+    semaphore = threading.Semaphore(config.get('max_concurrent_requests', 5))
+    
+    threads = [threading.Thread(target=send_posts, args=(url, session, semaphore, proxy), daemon=True) for _ in range(num_threads)]
+    
     for t in threads:
         t.start()
-
+    
     for t in threads:
         t.join()
 
