@@ -16,7 +16,7 @@ Using multi-threading, the script generates random email addresses and passwords
 
 - Copy the The "webphishkiller.py" Or The It Here and click the "Download raw file" <a href="https://github.com/SackNewTon/phishkiller/blob/main/webphishkiller" download>Download Here</a>
 
-Make A Json file  called
+## Make A Filed Called
 
 - config.json
 
@@ -24,7 +24,7 @@ Make A Json file  called
 
 ```
 {
-    "url": "https://prkeyher.click/?upnSzvwA1LkV3N?utm=1",
+    "url": "https://add-the-actual-url-phishing-link-here",
     "num_threads": 25,
     "max_concurrent_requests": 5,
     "proxy": null,
