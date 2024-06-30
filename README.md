@@ -42,20 +42,20 @@ python3 webphishkiller.py
  
 HTTP POST Request Handling:
 
--send_posts(url, session, semaphore, proxy=None): Sends POST requests to a specified URL
+- send_posts(url, session, semaphore, proxy=None): Sends POST requests to a specified URL
 (url). It includes randomized email and password data in the request payload. The
 function handles retries and timeout with a session (session) object and uses a semaphore
 (semaphore) to limit concurrent requests. Optionally, it supports proxy usage (proxy parameter).
 
 Configuration Management:
 
--load_config(filename='config.json'): Loads configuration settings from a JSON file
+- load_config(filename='config.json'): Loads configuration settings from a JSON file
 (config.json) or environment variables. It retrieves settings such as url, num_threads, max_concurrent_requests, proxy, and auth_token.
 
 
 Main Program Execution:
 
--main(): Coordinates the main execution flow of the script. It initializes configurations, sets up
+- main(): Coordinates the main execution flow of the script. It initializes configurations, sets up
 a session with retry mechanisms, applies authentication headers if an auth_token is provided,
 creates threads (num_threads) to send POST requests concurrently, and manages their 
 lifecycle.
@@ -63,7 +63,7 @@ lifecycle.
 
 Thread Management:
 
--Threads are created to execute the send_posts() function concurrently. Each thread operates independently to send HTTP POST requests with randomized data.
+- Threads are created to execute the send_posts() function concurrently. Each thread operates independently to send HTTP POST requests with randomized data.
 
 
 Error Handling and Logging:
@@ -72,16 +72,16 @@ Error Handling and Logging:
 
 Dependencies:
 
--The script depends on several third-party libraries: requests, names, fake_useragent. These are used for HTTP requests, name generation, and generating random User-Agent headers respectively.
+- The script depends on several third-party libraries: requests, names, fake_useragent. These are used for HTTP requests, name generation, and generating random User-Agent headers respectively.
 
 Customization:
 
--Users can customize the script's behavior by modifying the config.json file or adjusting environment variables to fit their specific API endpoint, concurrency requirements, proxy configurations, and authentication needs.
+- Users can customize the script's behavior by modifying the config.json file or adjusting environment variables to fit their specific API endpoint, concurrency requirements, proxy configurations, and authentication needs.
 
 Overall, the script provides a framework for performing multithreaded HTTP POST requests with randomized data and robust error handling/logging, making it suitable for testing or automation tasks where concurrent API interactions are necessary.
 
 
-Overall, the script provides a framework for performing multithreaded HTTP POST requests with
+### Overall, the script provides a framework for performing multithreaded HTTP POST requests with
 randomized data and robust error handling/logging, making it suitable for testing or automation tasks
 where concurrent API interactions are necessary.
 
