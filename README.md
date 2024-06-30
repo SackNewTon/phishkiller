@@ -1,4 +1,4 @@
-# Phishkiller
+# WebPhishkiller
 
 ## Overview
 This script is designed to combat phishing attacks by flooding phisher databases with false information by flooding attacker database.
@@ -12,7 +12,7 @@ Using multi-threading, the script generates random email addresses and passwords
 - Stop Phising
 
 
-## Phishkiller usage
+## WebPhishkiller usage
 
 - Copy the The "webphishkiller.py" Or The Download It Here and click the "Download raw file" <a href="https://github.com/SackNewTon/phishkiller/blob/main/webphishkiller" download>Download Here</a>
 
