@@ -18,7 +18,7 @@ Using multi-threading, the script generates random email addresses and passwords
 
 ## Create a file Called
 
-- config.json
+- `config.json`
 
 ## Note!
 - Make sure The "webphishkiller.py" and "config.json" has to be in the directory/folder
