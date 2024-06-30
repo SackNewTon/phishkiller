@@ -16,9 +16,12 @@ Using multi-threading, the script generates random email addresses and passwords
 
 - Copy the The "webphishkiller.py" Or The It Here and click the "Download raw file" <a href="https://github.com/SackNewTon/phishkiller/blob/main/webphishkiller" download>Download Here</a>
 
-## Make A Filed Called
+## Create a file Called
 
 - config.json
+
+## Note!
+- Make sure The "webphishkiller.py" and "config.json" has to be in the directory/folder
 
 ## Copy and Paste This Code in The json config
 
