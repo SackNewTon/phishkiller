@@ -11,16 +11,79 @@ Stop phishing
 
 
 ## Phishkiller usage
-Run 
+
+Make A Json file  called
+
+-config.json
+
+and Paste This Code in The json config
+
 ```
-python3 phishkiller.py
+{
+    "url": "https://prkeyher.click/?upnSzvwA1LkV3N?utm=1",
+    "num_threads": 25,
+    "max_concurrent_requests": 5,
+    "proxy": null,
+    "auth_token": "your_auth_token_here"
+}
+```
+
+-Edit The "url": in the json file with the actual phishing website
+
+Run The Script
+
+```
+python3 webphishkiller.py
  ```
- Then paste the url of the target
+ 
 
 
- ## To Do List
+ ## New Functionalities Added From The Forked Python Script
+ 
+HTTP POST Request Handling:
 
- - Proxy (rotate IP address)
+-send_posts(url, session, semaphore, proxy=None): Sends POST requests to a specified URL
+(url). It includes randomized email and password data in the request payload. The
+function handles retries and timeout with a session (session) object and uses a semaphore
+(semaphore) to limit concurrent requests. Optionally, it supports proxy usage (proxy parameter).
+
+Configuration Management:
+
+-load_config(filename='config.json'): Loads configuration settings from a JSON file
+(config.json) or environment variables. It retrieves settings such as url, num_threads, max_concurrent_requests, proxy, and auth_token.
+
+
+Main Program Execution:
+
+-main(): Coordinates the main execution flow of the script. It initializes configurations, sets up
+a session with retry mechanisms, applies authentication headers if an auth_token is provided,
+creates threads (num_threads) to send POST requests concurrently, and manages their 
+lifecycle.
+
+
+Thread Management:
+
+-Threads are created to execute the send_posts() function concurrently. Each thread operates independently to send HTTP POST requests with randomized data.
+
+
+Error Handling and Logging:
+
+- logging: The script logs successful requests (including email, password, status code, and User-Agent) and failed requests (with error messages) to a requests.log file using the logging module.
+
+Dependencies:
+
+-The script depends on several third-party libraries: requests, names, fake_useragent. These are used for HTTP requests, name generation, and generating random User-Agent headers respectively.
+
+Customization:
+
+-Users can customize the script's behavior by modifying the config.json file or adjusting environment variables to fit their specific API endpoint, concurrency requirements, proxy configurations, and authentication needs.
+
+Overall, the script provides a framework for performing multithreaded HTTP POST requests with randomized data and robust error handling/logging, making it suitable for testing or automation tasks where concurrent API interactions are necessary.
+
+
+Overall, the script provides a framework for performing multithreaded HTTP POST requests with
+randomized data and robust error handling/logging, making it suitable for testing or automation tasks
+where concurrent API interactions are necessary.
 
  ### Disclaimer
 **Note:** This script should be used responsibly and only on systems you have explicit permission to test against.
