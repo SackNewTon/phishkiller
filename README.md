@@ -14,7 +14,7 @@ Using multi-threading, the script generates random email addresses and passwords
 
 ## Phishkiller usage
 
-- Copy the The "webphishkiller.py" Or The It Here and click the "Download raw file" <a href="https://github.com/SackNewTon/phishkiller/blob/main/webphishkiller" download>Download Here</a>
+- Copy the The "webphishkiller.py" Or The Download It Here and click the "Download raw file" <a href="https://github.com/SackNewTon/phishkiller/blob/main/webphishkiller" download>Download Here</a>
 
 ## Create a file Called
 
